@@ -1,6 +1,7 @@
 package org.avaje.glue;
 
 import org.avaje.glue.jetty.JettyRun;
+import org.avaje.glue.properties.PropertiesLoader;
 import org.eclipse.jetty.servlet.FilterHolder;
 
 public class GlueAppBuilder {
@@ -25,7 +26,15 @@ public class GlueAppBuilder {
     this.pathSpec = glueApp.pathSpec();
   }
 
-  public void run() {
+  /**
+   * Run the Jetty based application passing the command line arguments.
+   *
+   * @param args The command line arguments.
+   */
+  public void run(String[] args) {
+
+    // load properties and yml files including ones passed as command line args
+    PropertiesLoader.load(args);
 
     FilterHolder holder = jerseyFilter(configClass.getName());
     jettyRun.getContext().addFilter(holder, pathSpec, null);
