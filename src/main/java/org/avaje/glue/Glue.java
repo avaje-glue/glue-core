@@ -6,14 +6,21 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Specify the default cache use specific entity type.
+ * Used on the main application class to specify the configuration.
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Glue {
 
   /**
-   * The Jersey Application configuration class.
+   * The Spring or Jersey Application configuration class.
+   * <p>
+   * For a Spring Jersey application this should refer to a Spring <code>@Configuration</code> bean
+   * that specifies the wiring of the Spring context.
+   * </p>
+   * <p>
+   * For a Jersey application without Spring this should refer to a class that extends JAX-RS ResourceConfig.
+   * </p>
    */
   Class<?> config();
 

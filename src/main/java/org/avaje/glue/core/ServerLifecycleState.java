@@ -2,6 +2,9 @@ package org.avaje.glue.core;
 
 import org.avaje.glue.jetty.ContainerLifecycleListener;
 
+/**
+ * Sets the ServerState based on the container lifecycle.
+ */
 public class ServerLifecycleState implements ContainerLifecycleListener {
 
   @Override
