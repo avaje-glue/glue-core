@@ -62,6 +62,12 @@
       <groupId>org.glassfish.jersey.containers</groupId>
       <artifactId>jersey-container-servlet-core</artifactId>
       <version>${jersey.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.glassfish.jersey.media</groupId>
+          <artifactId>jersey-media-jaxb</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -97,9 +103,9 @@
     <!-- Logging -->
 
     <dependency>
-      <groupId>org.avaje.glue</groupId>
-      <artifactId>composite-logback</artifactId>
-      <version>1.1-SNAPSHOT</version>
+      <groupId>org.avaje.composite</groupId>
+      <artifactId>logback</artifactId>
+      <version>1.1</version>
       <scope>test</scope>
     </dependency>
 
