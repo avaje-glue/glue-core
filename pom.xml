@@ -10,11 +10,11 @@
 
   <groupId>org.avaje.glue</groupId>
   <artifactId>glue-core</artifactId>
-  <version>1.1</version>
+  <version>1.2-SNAPSHOT</version>
 
   <scm>
     <developerConnection>scm:git:git@github.com:avaje-glue/glue-core.git</developerConnection>
-    <tag>glue-core-1.1</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <properties>
