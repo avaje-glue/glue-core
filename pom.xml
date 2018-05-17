@@ -48,14 +48,14 @@
 
     <dependency>
       <groupId>org.avaje.glue</groupId>
-      <artifactId>glue-config</artifactId>
-      <version>1.1-SNAPSHOT</version>
+      <artifactId>glue-properties</artifactId>
+      <version>1.1</version>
     </dependency>
 
     <dependency>
       <groupId>org.avaje.glue</groupId>
       <artifactId>jetty-runner</artifactId>
-      <version>1.1-SNAPSHOT</version>
+      <version>1.1</version>
     </dependency>
 
     <dependency>
