@@ -22,6 +22,16 @@ public class SpringContext {
   }
 
   /**
+   * Return the Spring application context (if set).
+   * <p>
+   * Can be used by plugins (like the WebSocket support) to access/find Spring beans.
+   * </p>
+   */
+  public static synchronized ApplicationContext get() {
+    return context;
+  }
+
+  /**
    * Return the JAX-RS Resources that should be registered (with Jersey or RestEasy etc).
    */
   public static List<Object> allRestResources() {

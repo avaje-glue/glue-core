@@ -24,10 +24,7 @@ public class BaseRestConfig extends ResourceConfig {
     property(CommonProperties.FEATURE_AUTO_DISCOVERY_DISABLE, true);
     property(CommonProperties.MOXY_JSON_FEATURE_DISABLE, true);
 
-    //register(JacksonFeature.class);
     register(HealthResource.class);
-
-    //registerObjectMapper();
   }
 
   /**

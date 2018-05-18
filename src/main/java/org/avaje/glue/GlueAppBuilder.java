@@ -3,9 +3,13 @@ package org.avaje.glue;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.avaje.glue.config.BaseSpringRestConfig;
 import org.avaje.glue.config.JacksonMapperRegistry;
+import org.avaje.glue.config.WebSocketProvider;
+import org.avaje.glue.core.ShutdownDelay;
+import org.avaje.glue.core.ShutdownLogic;
 import org.avaje.glue.core.SpringContext;
 import org.avaje.glue.jetty.JettyRun;
 import org.avaje.glue.properties.PropertiesLoader;
+import org.avaje.glue.properties.Property;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
@@ -15,9 +19,12 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.PropertiesPropertySource;
 
+import javax.websocket.DeploymentException;
+import javax.websocket.server.ServerEndpointConfig;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.ServiceLoader;
 import java.util.logging.LogManager;
 
 /**
@@ -97,6 +104,9 @@ public class GlueAppBuilder {
       jettyRun.setHttpPort(port);
     }
 
+    int registerDelay = 1000 * Property.getInt("shutdown.registerDelay", 30);
+    ShutdownDelay.register(registerDelay, new ShutdownLogic(jettyRun));
+
     jettyRun.run();
   }
 
@@ -112,11 +122,13 @@ public class GlueAppBuilder {
     springAppContext = new AnnotationConfigApplicationContext();
     springAppContext.getEnvironment().getPropertySources().addLast(source);
     springAppContext.register(configClass);
+    springAppContext.registerShutdownHook();
     springAppContext.refresh();
 
     SpringContext.set(springAppContext);
 
     springRegisterJacksonMapper();
+    springRegisterWebSocketEndpoints();
 
     // search for a spring bean that configures JAX-RS
     Collection<ResourceConfig> resourceConfigs = springAppContext.getBeansOfType(ResourceConfig.class).values();
@@ -132,6 +144,20 @@ public class GlueAppBuilder {
       String restConfigClassName = BaseSpringRestConfig.class.getName();
       springAppContext.registerBean(restConfigClassName, BaseSpringRestConfig.class);
       return restConfigClassName;
+    }
+  }
+
+  private void springRegisterWebSocketEndpoints() {
+
+    try {
+      Iterator<WebSocketProvider> iterator = ServiceLoader.load(WebSocketProvider.class).iterator();
+      while (iterator.hasNext()) {
+        for (ServerEndpointConfig endpoint : iterator.next().endpoints()) {
+          jettyRun.addEndpoint(endpoint);
+        }
+      }
+    } catch (DeploymentException e) {
+      throw new IllegalStateException(e);
     }
   }
 
