@@ -3,6 +3,11 @@ Glue Jetty + Jersey + Jackson + Spring
 
 Spring boot like but avoiding uber jar, classpath scanning and automatic configuration.
 
+## Background
+
+In a Docker, Kubernetes, CI/CD world we need to do some things better.
+Refer to: https://github.com/avaje-glue/glue-core/wiki
+
 
 ## Goals
 - main() method to run (and debug)
